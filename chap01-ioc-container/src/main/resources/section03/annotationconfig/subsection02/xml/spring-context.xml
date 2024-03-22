@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Note. 해당 XML 스키마 위치: https://docs.spring.io/spring-framework/reference/core/appendix/xsd-schemas.html#xsd-schemas-context-->
+
+	<!-- #1 -->
+<!--	<context:component-scan base-package="com.ohgiraffers"/>-->
+
+	<!-- #2 -->
+	<context:component-scan base-package="com.ohgiraffers">
+		<context:exclude-filter type="assignable" expression="com.ohgiraffers.common.MemberDAO"/>
+	</context:component-scan>
+	<!-- 설명. DAO 클래스를 예외 필터링 시켰으므로 Application의 getBean() 메소드는 오류가 발생할 것이다. -->
+</beans>
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.ohgiraffers.section01.aop.common"/>
+
+	<!-- aop 스키마를 namespace에서 추가해주자 -->
+	<!-- @EnableAspectJAutoProxy 어노테이션과 동일한 역할을 한다. -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+	<!-- aspect를 등록할 것이다. -->
+	<!-- advice로 등록할 class를 빈으로 등록한다. -->
+	<bean id="beforeAdvice" class="com.ohgiraffers.section01.aop.subsection02.xml.aop.BeforeAttendingAdvice"/>
+	<bean id="afterAdvice" class="com.ohgiraffers.section01.aop.subsection02.xml.aop.AfterAttendingAdvice"/>
+	<bean id="afterReturningAdvice" class="com.ohgiraffers.section01.aop.subsection02.xml.aop.AfterReturningAttendingAdvice"/>
+	<bean id="afterThrowingAdvice" class="com.ohgiraffers.section01.aop.subsection02.xml.aop.AfterThrowingAttendingAdvice"/>
+	<bean id="aroundAdvice" class="com.ohgiraffers.section01.aop.subsection02.xml.aop.AroundAttendingAdvice"/>
+	
+	<!-- aop 설정을 한다. -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut expression="execution(* com.ohgiraffers.section01.aop.common..*(..))" id="studyPointcut"/>
+		<aop:aspect id="studyAdvisor" ref="beforeAdvice">
+			<aop:before method="beforeAttending" pointcut-ref="studyPointcut"/>
+		</aop:aspect>
+		<aop:aspect id="studyAdvisor" ref="afterAdvice">
+			<aop:after method="afterAttending" pointcut-ref="studyPointcut"/>
+		</aop:aspect>
+		<aop:aspect id="studyAdvisor" ref="afterReturningAdvice" >
+			<aop:after-returning method="afterReturningAttending" pointcut-ref="studyPointcut" returning="result"/>
+		</aop:aspect>
+		<aop:aspect id="studyAdvisor" ref="afterThrowingAdvice">
+			<aop:after-throwing method="afterThrowingAttending" pointcut-ref="studyPointcut" throwing="exception"/>
+		</aop:aspect>
+		<aop:aspect id="studyAdvisor" ref="aroundAdvice">
+			<aop:around method="aroundAttending" pointcut-ref="studyPointcut"/>
+		</aop:aspect>
+	</aop:config>
+</beans>
